@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="opilaneSet" EntityType="Model1.Store.opilaneSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ryhmSet" EntityType="Model1.Store.ryhmSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ryhmopilane" Association="Model1.Store.ryhmopilane">
+      <End Role="ryhm" EntitySet="ryhmSet" />
+      <End Role="opilane" EntitySet="opilaneSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="opilaneSet">
+    <Key>
+      <PropertyRef Name="opilaneId" />
+    </Key>
+    <Property Name="opilaneId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="eesnimi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="perenimi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="synniaeg" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ryhm_ryhmId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ryhmSet">
+    <Key>
+      <PropertyRef Name="ryhmId" />
+    </Key>
+    <Property Name="ryhmId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ryhmNimi" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="osakond" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <Association Name="ryhmopilane">
+    <End Role="ryhm" Type="Model1.Store.ryhmSet" Multiplicity="1" />
+    <End Role="opilane" Type="Model1.Store.opilaneSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ryhm">
+        <PropertyRef Name="ryhmId" />
+      </Principal>
+      <Dependent Role="opilane">
+        <PropertyRef Name="ryhm_ryhmId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="opilaneSet" EntityType="Model1.opilane" />
+          <EntitySet Name="ryhmSet" EntityType="Model1.ryhm" />
+          <AssociationSet Name="ryhmopilane" Association="Model1.ryhmopilane">
+            <End Role="ryhm" EntitySet="ryhmSet" />
+            <End Role="opilane" EntitySet="opilaneSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="opilane">
+          <Key>
+            <PropertyRef Name="opilaneId" />
+          </Key>
+          <Property Name="opilaneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="eesnimi" Type="String" Nullable="false" />
+          <Property Name="perenimi" Type="String" Nullable="false" />
+          <Property Name="synniaeg" Type="String" Nullable="false" />
+          <NavigationProperty Name="ryhm" Relationship="Model1.ryhmopilane" FromRole="opilane" ToRole="ryhm" />
+        </EntityType>
+        <EntityType Name="ryhm">
+          <Key>
+            <PropertyRef Name="ryhmId" />
+          </Key>
+          <Property Name="ryhmId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ryhmNimi" Type="String" Nullable="false" />
+          <Property Name="osakond" Type="String" Nullable="false" />
+          <NavigationProperty Name="opilane" Relationship="Model1.ryhmopilane" FromRole="ryhm" ToRole="opilane" />
+        </EntityType>
+        <Association Name="ryhmopilane">
+          <End Type="Model1.ryhm" Role="ryhm" Multiplicity="1" />
+          <End Type="Model1.opilane" Role="opilane" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="opilaneSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.opilane)">
+        <MappingFragment StoreEntitySet="opilaneSet">
+          <ScalarProperty Name="opilaneId" ColumnName="opilaneId" />
+          <ScalarProperty Name="eesnimi" ColumnName="eesnimi" />
+          <ScalarProperty Name="perenimi" ColumnName="perenimi" />
+          <ScalarProperty Name="synniaeg" ColumnName="synniaeg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ryhmSet">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.ryhm)">
+        <MappingFragment StoreEntitySet="ryhmSet">
+          <ScalarProperty Name="ryhmId" ColumnName="ryhmId" />
+          <ScalarProperty Name="ryhmNimi" ColumnName="ryhmNimi" />
+          <ScalarProperty Name="osakond" ColumnName="osakond" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ryhmopilane" TypeName="Model1.ryhmopilane" StoreEntitySet="opilaneSet">
+      <EndProperty Name="ryhm">
+        <ScalarProperty Name="ryhmId" ColumnName="ryhm_ryhmId" />
+      </EndProperty>
+      <EndProperty Name="opilane">
+        <ScalarProperty Name="opilaneId" ColumnName="opilaneId" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
